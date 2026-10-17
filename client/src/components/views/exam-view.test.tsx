@@ -411,17 +411,17 @@ describe("ExamView mixed-language content", () => {
     render(<ExamView />)
 
     const heading = await screen.findByText("What is CPU?")
-    expect(heading.closest("p")).toHaveAttribute("dir", "auto")
+    expect(heading.closest("[dir='auto']")).toHaveAttribute("dir", "auto")
 
     const option = await screen.findByText("Central Processing Unit")
-    expect(option.closest("span")).toHaveAttribute("dir", "auto")
+    expect(option.closest("[dir='auto']")).toHaveAttribute("dir", "auto")
 
     act(() => {
       fireEvent.click(screen.getByRole("button", { name: /سوال بعدی/ }))
     })
 
     const mixed = await screen.findByText("متن فارسی با English داخلش")
-    expect(mixed.closest("p")).toHaveAttribute("dir", "auto")
+    expect(mixed.closest("[dir='auto']")).toHaveAttribute("dir", "auto")
   })
 
   it("keeps the practice banner slim on small screens", async () => {

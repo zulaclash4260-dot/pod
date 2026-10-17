@@ -39,6 +39,7 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog"
 import { FaNum, ToPersianDigits } from "@/components/fa-utils"
+import { MixedText } from "@/components/mixed-text"
 import { useToast } from "@/hooks/use-toast"
 import { cn, ICON_STROKE, ICON_STROKE_ACTION, ICON_STROKE_LARGE } from "@/lib/utils";
 
@@ -1151,6 +1152,13 @@ function QuestionEditor({
               placeholder="متن سوال (می‌تواند چندخطی باشد)"
               className="resize-y min-h-[88px]"
             />
+            {/* live preview: fenced ``` blocks render LTR, prose stays RTL */}
+            {text.trim() && (
+              <div className="rounded-lg border border-border bg-secondary/30 p-3">
+                <p className="text-[11px] font-medium text-muted-foreground mb-1">پیش‌نمایش</p>
+                <MixedText text={text} className="text-sm leading-7" />
+              </div>
+            )}
           </div>
 
           {/* image upload */}

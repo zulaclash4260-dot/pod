@@ -35,6 +35,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import { FaNum, ToPersianDigits } from "@/components/fa-utils"
+import { MixedText } from "@/components/mixed-text"
 import { firedThresholds, vibrate } from "@/lib/exam-timer"
 import { useToast } from "@/hooks/use-toast"
 import { useOnlineStatus } from "@/hooks/use-online-status"
@@ -639,9 +640,7 @@ export function ExamView() {
                 <span className="flex size-8 shrink-0 items-center justify-center rounded-md bg-secondary text-sm font-semibold tabular-nums">
                   <FaNum>{index + 1}</FaNum>
                 </span>
-                <p dir="auto" className="text-[15px] leading-8 font-medium whitespace-pre-wrap min-w-0 break-words">
-                  {question.text}
-                </p>
+                <MixedText text={question.text} className="text-[15px] leading-8 font-medium whitespace-pre-wrap" />
               </div>
 
               {question.imageBase64 ? (
@@ -704,7 +703,7 @@ export function ExamView() {
                             LETTERS[i]
                           )}
                         </span>
-                        <span dir="auto" className="text-sm leading-relaxed flex-1 min-w-0 break-words whitespace-pre-wrap">{opt}</span>
+                        <MixedText text={opt} className="text-sm leading-relaxed flex-1 whitespace-pre-wrap" />
                         {isCorrect && (
                           <span className="text-[10px] font-medium text-success shrink-0">صحیح</span>
                         )}
@@ -728,9 +727,7 @@ export function ExamView() {
                   <div className="mt-4 rounded-lg bg-secondary/50 border border-border p-3">
                     <p className="text-[11px] font-medium text-muted-foreground mb-1">توضیح</p>
                     {revealed[question.id].explanation && (
-                      <p dir="auto" className="text-xs leading-relaxed text-foreground/80 whitespace-pre-wrap">
-                        {revealed[question.id].explanation}
-                      </p>
+                      <MixedText text={revealed[question.id].explanation} className="text-xs leading-relaxed text-foreground/80 whitespace-pre-wrap" />
                     )}
                     {revealed[question.id].explanationImageBase64 && (
                       <div className="mt-2 flex justify-center">
@@ -1229,9 +1226,7 @@ function ExamReview({
                     <span className="flex size-7 shrink-0 items-center justify-center rounded-md bg-secondary text-xs font-semibold tabular-nums mt-0.5">
                       <FaNum>{qi + 1}</FaNum>
                     </span>
-                    <p dir="auto" className="text-sm leading-7 font-medium whitespace-pre-wrap flex-1 min-w-0 break-words">
-                      {question.text}
-                    </p>
+                    <MixedText text={question.text} className="text-sm leading-7 font-medium whitespace-pre-wrap flex-1" />
                     {isFlagged && (
                       <Flag className="size-4 shrink-0 text-warning mt-1" fill="currentColor" strokeWidth={ICON_STROKE} />
                     )}
@@ -1283,7 +1278,7 @@ function ExamReview({
                                 LETTERS[i]
                               )}
                             </span>
-                            <span dir="auto" className="text-sm leading-relaxed flex-1 min-w-0 break-words whitespace-pre-wrap">{opt}</span>
+                            <MixedText text={opt} className="text-sm leading-relaxed flex-1 whitespace-pre-wrap" />
                             {isCorrect && (
                               <span className="text-[10px] font-medium text-success shrink-0">صحیح</span>
                             )}
@@ -1301,9 +1296,7 @@ function ExamReview({
                     <div className="mt-3 rounded-lg bg-secondary/50 border border-border p-2.5">
                       <p className="text-[11px] font-medium text-muted-foreground mb-0.5">توضیح</p>
                       {question.explanation && (
-                        <p dir="auto" className="text-xs leading-relaxed text-foreground/80 whitespace-pre-wrap">
-                          {question.explanation}
-                        </p>
+                        <MixedText text={question.explanation} className="text-xs leading-relaxed text-foreground/80 whitespace-pre-wrap" />
                       )}
                       {question.explanationImageBase64 && (
                         <div className="mt-2 flex justify-center">
