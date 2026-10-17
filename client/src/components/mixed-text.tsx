@@ -14,11 +14,12 @@ import { cn } from "@/lib/utils"
  *   ```
  *   و `print(int(x))` چه چاپ می‌کند؟
  *
- * Rendering rules:
+ * Rendering rules (direction only, no decorative chrome):
  * - Plain text keeps dir="auto", so Persian stays right-aligned.
- * - ``` fenced blocks render as LTR monospace <pre>, left-aligned —
- *   the opposite direction of the surrounding text.
- * - `inline code` renders as an isolated LTR <code> span, so it never
+ * - ``` fenced blocks render as plain LTR text: left-aligned, monospace,
+ *   each line on its own line — the opposite direction of the surrounding
+ *   text, with no box, border or background drawn around it.
+ * - `inline code` renders as an isolated LTR monospace span, so it never
  *   flips the bidi order of the Persian sentence around it.
  *
  * Built only from React elements (no dangerouslySetInnerHTML), so
@@ -66,7 +67,7 @@ function renderInline(value: string, keyPrefix: string): React.ReactNode {
         key={`${keyPrefix}c${i}`}
         dir="ltr"
         style={{ unicodeBidi: "isolate" }}
-        className="mx-0.5 inline-block rounded border border-border/70 bg-secondary/70 px-1.5 py-px font-mono text-[0.85em]"
+        className="font-mono text-[0.85em]"
       >
         {part.slice(1, -1)}
       </code>
@@ -86,7 +87,7 @@ export function MixedText({ text, className }: { text: string | null | undefined
           <pre
             key={i}
             dir="ltr"
-            className="my-2 overflow-x-auto rounded-lg border border-border bg-secondary/50 px-3 py-2 text-left font-mono text-[13px] leading-6 whitespace-pre"
+            className="my-1 overflow-x-auto text-left font-mono text-[13px] leading-6 whitespace-pre"
           >
             <code>{seg.value}</code>
           </pre>
