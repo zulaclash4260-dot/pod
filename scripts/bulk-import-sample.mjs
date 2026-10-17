@@ -97,6 +97,11 @@ class CookieJar {
   header() {
     return [...this.#store.entries()].map(([k, v]) => `${k}=${v}`).join("; ")
   }
+
+  /** @param {string} name */
+  get(name) {
+    return this.#store.get(name)
+  }
 }
 
 /**
@@ -136,7 +141,10 @@ async function api(jar, path, opts = {}) {
 
 const jar = new CookieJar()
 
-// ۱) لاگین مدیر — پاسخ شامل { user, csrf } است و کوکی‌های نشست را ست می‌کند.
+// ۱) لاگین مدیر — کوکی‌های نشست (از جمله pb_csrf) ست می‌شوند.
+// توکن CSRF داخل بدنه‌ی پاسخ نیست؛ مقدارش همان کوکی pb_csrf است.
+// سرور روی درخواست‌های تغییردهنده چک می‌کند:
+//   هدر x-csrf-token === کوکی pb_csrf === توکن موردانتظار کاربر
 console.log(`→ لاگین ${USERNAME} در ${BASE} ...`)
 const login = await api(jar, "/api/auth/login", {
   method: "POST",
@@ -146,7 +154,10 @@ const login = await api(jar, "/api/auth/login", {
 if (login.user?.role !== "ADMIN") {
   throw new Error(`کاربر «${USERNAME}» مدیر نیست؛ ورودی گروهی فقط برای مدیر است.`)
 }
-console.log("✓ لاگین موفق، توکن CSRF گرفته شد.")
+
+const csrf = jar.get("pb_csrf")
+if (!csrf) throw new Error("کوکی pb_csrf از پاسخ لاگین گرفته نشد.")
+console.log("✓ لاگین موفق، توکن CSRF از کوکی خوانده شد.")
 
 // ۲) ورودی گروهی
 const questions = loadQuestions()
@@ -154,7 +165,7 @@ console.log(`→ ارسال ${questions.length} سوال به پودمان ${MOD
 
 const result = await api(jar, "/api/admin/questions/bulk", {
   method: "POST",
-  csrf: login.csrf,
+  csrf,
   body: { moduleId: MODULE_ID, questions },
 })
 
